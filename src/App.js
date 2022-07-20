@@ -13,6 +13,10 @@ import { Link } from '@mui/material';
 
 import Registration from './components/Registration';
 import Login from './components/Login';
+import Header from './components/Header';
+import HomePage from './components/HomePage';
+import Footer from './components/Footer'
+import { Route, Routes } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -23,8 +27,15 @@ function handleSubmit(e) {
 function App() {
   return (
     <div>
-    Home Page
-    
+      <Header></Header>
+      <Routes>
+        <Route exact path="/" element={<HomePage></HomePage>}></Route>
+        <Route exact path="/aboutus" element={<HomePage></HomePage>}></Route>
+        <Route exact path="/recipes" element={<HomePage></HomePage>}></Route>
+        <Route exact path="/ingredients" element={<HomePage></HomePage>}></Route>
+        <Route path="/login" element={<Login></Login>}></Route>
+      </Routes>
+      <Footer></Footer>
     </div>
   );
 }
