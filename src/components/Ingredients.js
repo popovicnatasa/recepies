@@ -34,11 +34,11 @@ function Ingredients() {
         console.log(error);
       });
 
-  },[ingredientsData]);
+  },[]);
 
   useEffect(() => {
     console.log(ingredientsData);
-  }, []);
+  }, [ingredientsData]);
 
   const displayPosts = () => {
     return ingredientsData.map((ingredient) => {
