@@ -27,17 +27,17 @@ function Ingredients() {
           return { id: ingredient.id, name: ingredient.name, image: ingredient.image, description: short }
         });
         setIngData(transformedData);
-        console.log(ingredientsData);
+        //console.log(ingredientsData);
       })
 
       .catch(function (error) {
         console.log(error);
       });
 
-  },[]);
+  });
 
   useEffect(() => {
-    console.log(ingredientsData);
+    //console.log(ingredientsData);
   }, [ingredientsData]);
 
   const displayPosts = () => {
