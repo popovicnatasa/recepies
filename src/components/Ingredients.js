@@ -16,25 +16,36 @@ function Ingredients() {
 
     var config = {
       method: 'get',
-      url: 'https://jsonblob.com/api/1000877400397201408',
-      headers: {}
+      url: 'https://www.themealdb.com/api/json/v1/1/list.php?i=list',
+      headers: { }
     };
 
     axios(config)
       .then(function (response) {
-        const transformedData = response.data.map((ingredient) => {
-          let short = ingredient.description.substring(0, 150);
-          return { id: ingredient.id, name: ingredient.name, image: ingredient.image, description: short }
+        //console.log(response.data.meals);
+        const slicedArray = response.data.meals.slice(0, 20);
+        const transformedData = slicedArray.map((ingredient) => {
+          //console.log(response.data);
+          let short = ingredient.strDescription;
+          if (short != null)
+          {
+            short = ingredient.strDescription.substring(0, 150);
+          }
+          let imgUrl = "https://www.themealdb.com/images/ingredients/"+ingredient.strIngredient+".png";
+          imgUrl = imgUrl.replace(" ", "%20");
+
+          console.log(imgUrl);
+          return { id: ingredient.idIngredient, name: ingredient.strIngredient, image: imgUrl, description: short }
         });
         setIngData(transformedData);
-        //console.log(ingredientsData);
+        console.log(ingredientsData);
       })
 
       .catch(function (error) {
         console.log(error);
       });
 
-  });
+  },[]);
 
   useEffect(() => {
     //console.log(ingredientsData);
