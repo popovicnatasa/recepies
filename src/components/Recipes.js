@@ -1,6 +1,6 @@
 import '../App.css';
 import * as React from 'react';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import IngredientCard from './IngredientCard';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
@@ -13,12 +13,23 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import RecipeCard from './RecipeCard';
+import Pagination from './Pagination';
 
 function Recipes ()
 {
     const [ searchText, setSearchText ] = useState("");
     const [ searchRadio, setSearchRadio ] = useState("name");
     const [ recipesData, setRecipesData ] = useState([]);
+
+    const [currentPage, setCurrentPage] = useState(0);
+    
+    let PageSize = 10;
+
+    const currentTableData = useMemo(() => {
+        const firstPageIndex = (currentPage - 1) * PageSize;
+        const lastPageIndex = firstPageIndex + PageSize;
+        return recipesData.slice(firstPageIndex, lastPageIndex);
+    }, [currentPage]);
 
     const getMeals = useCallback(()=>{
         var axios = require('axios');
@@ -58,6 +69,7 @@ function Recipes ()
                 }
                 
             }
+            setCurrentPage(1);
           })
     
           .catch(function (error) {
@@ -99,16 +111,21 @@ function Recipes ()
             </RadioGroup>
             </FormControl>
             <br/><br/>
+            <Pagination
+                currentPage={currentPage}
+                totalCount={Math.ceil(recipesData.length / PageSize)}
+                onPageChange={page => setCurrentPage(page)}
+            />
+            <br/>
             <Grid container spacing={7} columns={3}>
-        
-                {
-                    recipesData.map((recipe)=>{
-                        return <RecipeCard id={recipe.id} name={recipe.name} image={recipe.image} description={recipe.description} key={recipe.id}></RecipeCard>
-    
-                    })
-                }
-            
+            {
+                currentTableData.map((recipe)=>{
+                    return <RecipeCard id={recipe.id} name={recipe.name} image={recipe.image} description={recipe.description} key={recipe.id}></RecipeCard>
+
+                })
+            }
             </Grid>
+            
             <br/><br/>
         </div>
     )
