@@ -9,7 +9,7 @@ import { Grid } from '@mui/material';
 function RecipeCard(props) {
 
     return (
-        <Grid item >
+        <Grid item onClick={props.onClick}>
             <Card sx={{ maxWidth: 345 }}>
                 <CardActionArea>
                     <CardMedia
