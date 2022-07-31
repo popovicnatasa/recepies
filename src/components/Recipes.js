@@ -11,9 +11,13 @@ import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import RecipeCard from './RecipeCard';
 import Pagination from './Pagination';
+import { useParams } from 'react-router-dom';
 
 function Recipes ()
 {
+    const { name } = useParams();
+
+
     const [ searchText, setSearchText ] = useState("");
     const [ searchRadio, setSearchRadio ] = useState("name");
     const [ recipesData, setRecipesData ] = useState([]);
@@ -28,11 +32,6 @@ function Recipes ()
         const lastPageIndex = firstPageIndex + PageSize;
         setFilteredRecipesData(recipesData.slice(firstPageIndex, lastPageIndex));
     }, [currentPage]);
-
-
-    useEffect(()=>{
-        console.log(filteredRecipesData)
-    }, [filteredRecipesData])
 
     const getMeals = useCallback(()=>{
         var axios = require('axios');
@@ -54,23 +53,21 @@ function Recipes ()
               }
               let mealThumb = meal.strMealThumb;
     
-              return { id: meal.idMeal, name: meal.strMeal, image: mealThumb, description: short, area: meal.strArea, mainIngredient: meal.strIngredient1 }
+              return { id: meal.idMeal, name: meal.strMeal, image: mealThumb, description: short, area: meal.strArea, mainIngredient: meal.strIngredient1, category: meal.strCategory }
             });
 
+            const filteredByCategory = transformedData.filter(meal=>meal.category.toLowerCase() === name.toLowerCase());
             if(searchRadio === "name" || searchText === "")
-                setRecipesData(transformedData)
+                setRecipesData(filteredByCategory)
             else {
                 if (searchRadio === "area")
                 {
-                    let newArray = transformedData.filter(meal=>meal.area.toLowerCase() === searchText.toLowerCase());
-                    setRecipesData(newArray)
+                    setRecipesData(filteredByCategory.filter(meal=>meal.area.toLowerCase() === searchText.toLowerCase()))
                 }
                 else if (searchRadio === "ingredient")
                 {
-                    let newArray = transformedData.filter(meal=>meal.mainIngredient.toLowerCase() === searchText.toLowerCase());
-                    setRecipesData(newArray);
+                    setRecipesData(filteredByCategory.filter(meal=>meal.mainIngredient.toLowerCase() === searchText.toLowerCase()));
                 }
-                
             }
             setCurrentPage(1);
           })
