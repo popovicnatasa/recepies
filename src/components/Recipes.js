@@ -1,14 +1,11 @@
 import '../App.css';
 import * as React from 'react';
 import { useEffect, useState, useCallback, useMemo } from 'react';
-import IngredientCard from './IngredientCard';
-import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
@@ -20,6 +17,7 @@ function Recipes ()
     const [ searchText, setSearchText ] = useState("");
     const [ searchRadio, setSearchRadio ] = useState("name");
     const [ recipesData, setRecipesData ] = useState([]);
+    const [ filteredRecipesData, setFilteredRecipesData ] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(0);
     
@@ -28,15 +26,20 @@ function Recipes ()
     const currentTableData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * PageSize;
         const lastPageIndex = firstPageIndex + PageSize;
-        return recipesData.slice(firstPageIndex, lastPageIndex);
+        setFilteredRecipesData(recipesData.slice(firstPageIndex, lastPageIndex));
     }, [currentPage]);
+
+
+    useEffect(()=>{
+        console.log(filteredRecipesData)
+    }, [filteredRecipesData])
 
     const getMeals = useCallback(()=>{
         var axios = require('axios');
-        
+        setCurrentPage(0);
         var config = {
           method: 'get',
-          url: 'https://www.themealdb.com/api/json/v1/1/search.php?s=' + ((searchRadio == "name") ? searchText : ""),
+          url: 'https://www.themealdb.com/api/json/v1/1/search.php?s=' + ((searchRadio === "name") ? searchText : ""),
           headers: { }
         };
     
@@ -54,15 +57,15 @@ function Recipes ()
               return { id: meal.idMeal, name: meal.strMeal, image: mealThumb, description: short, area: meal.strArea, mainIngredient: meal.strIngredient1 }
             });
 
-            if(searchRadio == "name" || searchText == "")
+            if(searchRadio === "name" || searchText === "")
                 setRecipesData(transformedData)
             else {
-                if (searchRadio == "area")
+                if (searchRadio === "area")
                 {
                     let newArray = transformedData.filter(meal=>meal.area.toLowerCase() === searchText.toLowerCase());
                     setRecipesData(newArray)
                 }
-                else if (searchRadio == "ingredient")
+                else if (searchRadio === "ingredient")
                 {
                     let newArray = transformedData.filter(meal=>meal.mainIngredient.toLowerCase() === searchText.toLowerCase());
                     setRecipesData(newArray);
@@ -119,7 +122,7 @@ function Recipes ()
             <br/>
             <Grid container spacing={7} columns={3}>
             {
-                currentTableData.map((recipe)=>{
+                filteredRecipesData.map((recipe)=>{
                     return <RecipeCard id={recipe.id} name={recipe.name} image={recipe.image} description={recipe.description} key={recipe.id}></RecipeCard>
 
                 })
