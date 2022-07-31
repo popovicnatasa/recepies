@@ -14,19 +14,25 @@ import MenuItem from '@mui/material/MenuItem';
 //import AdbIcon from '@mui/icons-material/Adb';
 import Link from '@mui/material/Link';
 import logo from '../logo.png'
+import { useState, useEffect } from 'react';
 
 const pages = [{name: 'HomePage', url: '/'}, {name: 'About Us', url: '/aboutus'}, {name: 'Recipes', url: '/recipes'}, {name: 'Ingredients', url: '/ingredients'}];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = [{name: 'Registration', url: '/registration'}, {name: 'Login', url: '/login'}];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElRecipes, setAnchorElRecipes] = React.useState(null);
+  const [ categories, setCategories ] = useState([]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
+  };
+  const handleOpenCategoriesMenu = (event) => {
+    setAnchorElRecipes(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
@@ -36,6 +42,41 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleCloseCategoriesMenu = () => {
+    setAnchorElRecipes(null);
+  };
+
+  useEffect(()=>{
+      var axios = require('axios');
+
+      var config = {
+          method: 'get',
+          url: 'https://www.themealdb.com/api/json/v1/1/categories.php',
+          headers: { }
+        };
+
+      axios(config)
+      .then(function (response) {
+        const slicedArray = response.data.categories;
+        const transformedData = slicedArray.map((category) => {
+          return { name: category.strCategory}
+        });
+        setCategories(transformedData);
+      })
+
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, [])
+
+
+  const handleMouseEnter = (event, name) =>{
+    if (name === "Recipes")
+    {
+      handleOpenCategoriesMenu(event);
+    }
+  }
 
   return (
     <AppBar position="static" >
@@ -86,10 +127,42 @@ const ResponsiveAppBar = () => {
                 <Button
                   key={page.name}
                   onClick={handleCloseNavMenu}
+                  onMouseEnter={(event) => handleMouseEnter(event, page.name)}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   {page.name}
                 </Button>
+                {
+                  (page.name === "Recipes") ? 
+                  <Menu
+                    sx={{ mt: '45px' }}
+                    id="menu-appbar3"
+                    anchorEl={anchorElRecipes}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                    open={Boolean(anchorElRecipes)}
+                    onClose={handleCloseCategoriesMenu}
+                    onMouseLeave={handleCloseCategoriesMenu}
+                  >
+                    
+                  <Container maxWidth="l" id="appBar">
+                    {categories.map((category) => (
+                      <MenuItem key={category.name} >
+                        <Link href={`/recipes/${category.name}`} color="white" underline="none">
+                        <Typography textAlign="center">{category.name}</Typography>
+                        </Link>
+                      </MenuItem>
+                    ))}
+                    </Container>
+                  </Menu> : ""
+                }
               </Link>
             ))}
           </Box>
@@ -97,7 +170,7 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar />
               </IconButton>
             </Tooltip>
             <Menu
@@ -117,8 +190,10 @@ const ResponsiveAppBar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                  <Link href={setting.url} underline="none">
+                  <Typography textAlign="center">{setting.name}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>

@@ -39,4 +39,9 @@
 
 #appBar {
   background-color: #8D3D5B;
+  color: white
+}
+
+#searchBtn {
+  background-color: #C3C3C3;
 }
