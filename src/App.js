@@ -9,6 +9,7 @@ import Ingredients from './components/Ingredients';
 import Ingredient from './components/Ingredient';
 import Recipes from './components/Recipes';
 import Container from '@mui/material/Container';
+import Registration from './components/Registration';
 
 function App() {
   return (
@@ -22,12 +23,12 @@ function App() {
         <Route exact path="/aboutus" element={<HomePage></HomePage>}></Route>
         <Route exact path="/recipes" element={<Recipes></Recipes>}></Route>
         <Route exact path="/ingredients" element={<Ingredients></Ingredients>}></Route>
-        
         <Route path="/login" element={<Login></Login>}></Route>
+        <Route path="/registration" element={<Registration></Registration>}></Route>
       </Routes>
-      <Footer></Footer>
     </div>
     </Container>
+      <Footer></Footer>
     </div>
   );
 }
