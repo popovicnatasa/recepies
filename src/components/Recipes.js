@@ -12,6 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import RecipeCard from './RecipeCard';
 import Pagination from './Pagination';
 import { useParams } from 'react-router-dom';
+import Recipe from './Recipe';
 
 function Recipes ()
 {
@@ -23,6 +24,31 @@ function Recipes ()
     const [ recipesData, setRecipesData ] = useState([]);
     const [ filteredRecipesData, setFilteredRecipesData ] = useState([]);
 
+    const [openDialog, setOpenDialog] = React.useState(false);
+    const [scrollDialog, setScrollDialog] = React.useState('paper');
+    const [recipeID, setRecipeID] = useState(0);
+
+    const handleClickOpenDialog = (scrollType, recipeID) => () => {
+        setOpenDialog(true);
+        setScrollDialog(scrollType);
+        setRecipeID(recipeID);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+        setRecipeID(0);
+    };
+
+    const descriptionElementRef = React.useRef(null);
+    React.useEffect(() => {
+        if (openDialog) {
+        const { current: descriptionElement } = descriptionElementRef;
+        if (descriptionElement !== null) {
+            descriptionElement.focus();
+        }
+        }
+    }, [openDialog]);
+
     const [currentPage, setCurrentPage] = useState(0);
     
     let PageSize = 10;
@@ -32,6 +58,7 @@ function Recipes ()
         const lastPageIndex = firstPageIndex + PageSize;
         setFilteredRecipesData(recipesData.slice(firstPageIndex, lastPageIndex));
     }, [currentPage]);
+
 
     const getMeals = useCallback(()=>{
         var axios = require('axios');
@@ -120,12 +147,12 @@ function Recipes ()
             <Grid container spacing={7} columns={3}>
             {
                 filteredRecipesData.map((recipe)=>{
-                    return <RecipeCard id={recipe.id} name={recipe.name} image={recipe.image} description={recipe.description} key={recipe.id}></RecipeCard>
+                    return <RecipeCard id={recipe.id} name={recipe.name} image={recipe.image} description={recipe.description} key={recipe.id} onClick={handleClickOpenDialog('paper', recipe.id)}></RecipeCard>
 
                 })
             }
             </Grid>
-            
+            <Recipe open={openDialog} scroll={scrollDialog} handleClickOpenDialog={handleClickOpenDialog} recipeID={recipeID} handleClose={handleCloseDialog} descriptionElementRef={descriptionElementRef} ></Recipe>
             <br/><br/>
         </div>
     )
