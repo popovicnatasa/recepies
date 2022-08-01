@@ -3,7 +3,7 @@
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 100px;
   pointer-events: none;
 }
 
@@ -21,26 +21,40 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
 }
 
 .App-link {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
+/*@keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
   }
-}
+}*/
 
 #appBar {
-  background-color: #8D3D5B;
-  color: white
+  background-color: #c1d19e;
+  color: black!important;
 }
+
+#appBar button {
+  color: #5D504B;
+  font-size: 18px;
+}
+
+.MuiTypography-h2 {
+  color: #5D504B;
+  padding: 20px;
+}
+
+.MuiPagination-root {
+  margin:0 0 0 33%!important;
+  }
 
 #searchBtn {
   background-color: #C3C3C3;
@@ -48,4 +62,12 @@
 
 #recipeImage {
   max-width: 100%;
+}
+
+.ingredientModalImage {
+height: 300px;
+}
+
+body {
+  background-color: #F6FBE9;
 }

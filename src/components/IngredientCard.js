@@ -23,9 +23,9 @@ function IngredientCard(props) {
     return (
         
             <Grid item >
-                <ScrollDialog open={open} handleClickOpen={handleClickOpen} handleClose={handleClose} name={props.name} description={props.long}></ScrollDialog>
+                <ScrollDialog open={open} handleClickOpen={handleClickOpen} handleClose={handleClose} name={props.name} description={props.long} image={props.image}></ScrollDialog>
 
-                <Card sx={{ maxWidth: 345 }}>
+                <Card sx={{ width: 345, minHeight:300 }}>
                     <CardActionArea onClick={handleClickOpen}>
                         <CardMedia
                             component="img"

@@ -4,20 +4,10 @@ import { useEffect, useState } from 'react';
 import IngredientCard from './IngredientCard';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material';
-import Pagination from '@mui/material/Pagination';
 
 function Ingredients() {
 
   const [ingredientsData, setIngData] = useState([]);
-
-  let [page, setPage] = useState(1);
-  const PER_PAGE = 12;
-
-  const handleChange = (e, p) => {
-    setPage(p);
-    //_DATA.jump(p);
-    
-  };
 
   useEffect(() => {
     var axios = require('axios');
@@ -43,6 +33,7 @@ function Ingredients() {
           return { id: ingredient.idIngredient, name: ingredient.strIngredient, image: imgUrl, description: short, long: long }
         });
         setIngData(transformedData);
+
       })
 
       .catch(function (error) {
@@ -52,15 +43,12 @@ function Ingredients() {
   }, []);
 
   useEffect(() => {
-    console.log("page:"+page);
-  }, [page]);
+    
+  }, [ingredientsData]);
 
   const displayPosts = () => {
-
-    let start = (page-1)*PER_PAGE;
-    let end = PER_PAGE*page;
-    const slicedArray = ingredientsData.slice(start, end);
-    return slicedArray.map((ingredient) => {
+    
+    return ingredientsData.map((ingredient) => {
       return <IngredientCard id={ingredient.id} name={ingredient.name} image={ingredient.image} description={ingredient.description} long={ingredient.long} key={ingredient.id}></IngredientCard>
     })
   }
@@ -74,10 +62,6 @@ function Ingredients() {
       <Grid container spacing={3} columns={3} alignItems="center" justifyContent="center" style={{ textAlign: "center" }}>
         {displayPosts()}
       </Grid>
-
-      <Pagination page={page}
-        count={Math.ceil(ingredientsData.length / PER_PAGE)}
-        onChange={handleChange} style={{padding:"20px"}}/>
     </div>
   );
 }
