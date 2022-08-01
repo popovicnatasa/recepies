@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 //import AdbIcon from '@mui/icons-material/Adb';
 import Link from '@mui/material/Link';
-import logo from '../logo.png'
+import logo from '../logo3.png'
 import { useState, useEffect } from 'react';
 
 const pages = [{name: 'HomePage', url: '/'}, {name: 'About Us', url: '/aboutus'}, {name: 'Recipes', url: '/recipes'}, {name: 'Ingredients', url: '/ingredients'}];
@@ -83,7 +83,7 @@ const ResponsiveAppBar = () => {
       <Container maxWidth="l" id="appBar">
         <Toolbar disableGutters >
           <Link href="/" underline="none">
-          <img src={logo} alt="logo"></img>
+          <img src={logo} alt="logo" className="App-logo"></img>
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
