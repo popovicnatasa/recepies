@@ -38,13 +38,17 @@
 }*/
 
 #appBar {
-  background-color: #c1d19e;
+  background-color: black;
   color: black!important;
 }
 
 #appBar button {
-  color: #5D504B;
-  font-size: 18px;
+  color: white;
+  font-family: brandon-grotesque, "Helvetica Neue", Helvetica, arial, sans-serif;
+  font-size:16px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 1px;
 }
 
 .MuiTypography-h2 {
@@ -69,5 +73,5 @@ height: 300px;
 }
 
 body {
-  background-color: #F6FBE9;
+  background-color: #F6F8FA;
 }

@@ -19,7 +19,6 @@ function IngredientCard(props) {
         setOpen(false);
     };
 
-
     return (
         
             <Grid item >
@@ -29,7 +28,7 @@ function IngredientCard(props) {
                     <CardActionArea onClick={handleClickOpen}>
                         <CardMedia
                             component="img"
-                            height="140"
+                            height="240"
                             image={props.image}
                             alt={props.name}
                         />

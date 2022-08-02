@@ -13,6 +13,7 @@ import RecipeCard from './RecipeCard';
 import Pagination from './Pagination';
 import { useParams } from 'react-router-dom';
 import Recipe from './Recipe';
+import Container from '@mui/material/Container';
 
 function Recipes ()
 {
@@ -117,6 +118,7 @@ function Recipes ()
     }
 
     return (
+        <Container fixed>
         <div>
             <br/><br/>
             
@@ -155,6 +157,7 @@ function Recipes ()
             <Recipe open={openDialog} scroll={scrollDialog} handleClickOpenDialog={handleClickOpenDialog} recipeID={recipeID} handleClose={handleCloseDialog} descriptionElementRef={descriptionElementRef} ></Recipe>
             <br/><br/>
         </div>
+        </Container>
     )
 
 }
