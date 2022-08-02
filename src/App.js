@@ -8,14 +8,14 @@ import { Route, Routes } from 'react-router-dom';
 import Ingredients from './components/Ingredients';
 import Ingredient from './components/Ingredient';
 import Recipes from './components/Recipes';
-import Container from '@mui/material/Container';
+
 import Registration from './components/Registration';
 
 function App() {
   return (
     <div>
     <Header></Header>
-    <Container fixed>
+    
     <div>
       
       <Routes>
@@ -27,7 +27,7 @@ function App() {
         <Route path="/registration" element={<Registration></Registration>}></Route>
       </Routes>
     </div>
-    </Container>
+    
       <Footer></Footer>
     </div>
   );
